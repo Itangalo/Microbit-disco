@@ -40,6 +40,10 @@ let color = 0
 irRemote.connectInfrared(DigitalPin.P16)
 basic.forever(function () {
     while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_1)) {
-    	
+        if (Math.randomBoolean()) {
+            blinkaRSlump()
+        } else {
+            blinkaLSlump()
+        }
     }
 })

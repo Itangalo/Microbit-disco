@@ -10,6 +10,8 @@ Denna databas kan läggas till som ett **tillägg** i MakeCode.
 * klicka på **Tillägg** under kugghjulsmenyn
 * sök efter **https://github.com/itangalo/microbit-disco** och importera
 
+Det här projektet kräver att du importerar funktioner från det här repositoryt: https://github.com/keyestudio/KS4036F-KEYESTUDIO-Microbit-Smart-Robot-Car
+
 ## Redigera detta projekt
 
 Redigera den här databasen i MakeCode.

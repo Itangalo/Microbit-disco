@@ -75,6 +75,10 @@ basic.forever(function () {
             . # # # .
             . . # . .
             `)
+        for (let index = 0; index < 4; index++) {
+            music.play(music.tonePlayable(988, music.beat(BeatFraction.Whole)), music.PlaybackMode.UntilDone)
+            basic.pause(200)
+        }
     }
     while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Left)) {
         MiniCar.motor(Motorlist.M1, Direction1.Backward, 50)
@@ -104,7 +108,7 @@ basic.forever(function () {
         basic.showLeds(`
             . . . . .
             . . . . .
-            . . # . .
+            . . . . .
             . . . . .
             . . . . .
             `)

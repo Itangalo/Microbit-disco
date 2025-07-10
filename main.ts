@@ -46,4 +46,11 @@ basic.forever(function () {
             blinkaLSlump()
         }
     }
+    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_0)) {
+        MiniCar.led_rgb(LED_rgb_L_R.LED_L, LED_color.black)
+        MiniCar.led_rgb(LED_rgb_L_R.LED_R, LED_color.black)
+    }
+    while (false) {
+    	
+    }
 })

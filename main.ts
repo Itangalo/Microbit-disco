@@ -15,7 +15,7 @@ function blinkaLSlump () {
     } else {
         MiniCar.led_rgb(LED_rgb_L_R.LED_L, LED_color.yellow)
     }
-    basic.pause(200)
+    basic.pause(hastighet)
 }
 function blinkaRSlump () {
     color = randint(1, 7)
@@ -34,23 +34,33 @@ function blinkaRSlump () {
     } else {
         MiniCar.led_rgb(LED_rgb_L_R.LED_R, LED_color.yellow)
     }
-    basic.pause(200)
+    basic.pause(hastighet)
 }
 let color = 0
+let hastighet = 0
 irRemote.connectInfrared(DigitalPin.P16)
+hastighet = 200
 basic.forever(function () {
     while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_1)) {
-        if (Math.randomBoolean()) {
-            blinkaRSlump()
-        } else {
-            blinkaLSlump()
+        while (irRemote.returnIrButton() != irRemote.irButton(IrButton.Number_0)) {
+            if (Math.randomBoolean()) {
+                blinkaRSlump()
+            } else {
+                blinkaLSlump()
+            }
         }
-    }
-    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_0)) {
         MiniCar.led_rgb(LED_rgb_L_R.LED_L, LED_color.black)
         MiniCar.led_rgb(LED_rgb_L_R.LED_R, LED_color.black)
     }
-    while (false) {
-    	
+})
+basic.forever(function () {
+    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Up)) {
+        hastighet += -50
+    }
+    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Down)) {
+        hastighet += 50
+    }
+    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_2)) {
+        hastighet = 200
     }
 })

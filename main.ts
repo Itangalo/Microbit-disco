@@ -54,13 +54,35 @@ basic.forever(function () {
     }
 })
 basic.forever(function () {
-    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Up)) {
+    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_2)) {
         hastighet += -50
     }
-    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Down)) {
+    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_8)) {
         hastighet += 50
     }
-    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_2)) {
+    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_3)) {
         hastighet = 200
+    }
+})
+basic.forever(function () {
+    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Up)) {
+        MiniCar.motor(Motorlist.M1, Direction1.Forward, 50)
+        MiniCar.motor(Motorlist.M2, Direction1.Forward, 50)
+    }
+    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Down)) {
+        MiniCar.motor(Motorlist.M1, Direction1.Backward, 50)
+        MiniCar.motor(Motorlist.M2, Direction1.Backward, 50)
+    }
+    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Left)) {
+        MiniCar.motor(Motorlist.M1, Direction1.Backward, 50)
+        MiniCar.motor(Motorlist.M2, Direction1.Forward, 50)
+    }
+    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Right)) {
+        MiniCar.motor(Motorlist.M1, Direction1.Forward, 50)
+        MiniCar.motor(Motorlist.M2, Direction1.Backward, 50)
+    }
+    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Ok)) {
+        MiniCar.motor(Motorlist.M1, Direction1.Forward, 0)
+        MiniCar.motor(Motorlist.M2, Direction1.Forward, 0)
     }
 })

@@ -12,6 +12,12 @@ function getInput () {
     if (irKnapp == irRemote.irButton(IrButton.Number_2)) {
         lamphastighet += -50
     }
+    if (irKnapp == irRemote.irButton(IrButton.Number_8)) {
+        lamphastighet += 50
+    }
+    if (irKnapp == irRemote.irButton(IrButton.Number_3)) {
+        lamphastighet = hjulhastighetDefault
+    }
     if (irKnapp == irRemote.irButton(IrButton.Up)) {
         hjul = 1
     }
@@ -33,7 +39,7 @@ function blinkaLSlump () {
     } else {
         MiniCar.led_rgb(LED_rgb_L_R.LED_L, LED_color.yellow)
     }
-    basic.pause(hastighet)
+    basic.pause(lamphastighet)
 }
 function blinkaRSlump () {
     color = randint(1, 7)
@@ -52,7 +58,7 @@ function blinkaRSlump () {
     } else {
         MiniCar.led_rgb(LED_rgb_L_R.LED_R, LED_color.yellow)
     }
-    basic.pause(hastighet)
+    basic.pause(lamphastighet)
 }
 function doLights () {
     if (lampor == 1) {
@@ -65,36 +71,26 @@ function doLights () {
     if (lampor == 0) {
         MiniCar.led_rgb(LED_rgb_L_R.LED_L, LED_color.black)
         MiniCar.led_rgb(LED_rgb_L_R.LED_R, LED_color.black)
+        lamphastighet = 200
     }
 }
-let hastighet = 0
 let color = 0
 let irKnapp = 0
+let hjulhastighetDefault = 0
 let hjul = 0
+let lamphastighet = 0
 let lampor = 0
 irRemote.connectInfrared(DigitalPin.P16)
 lampor = 0
-let lamphastighet = 0
+let lamphastighetDefault = 200
+lamphastighet = lamphastighetDefault
 hjul = 0
-let hjulhastighet = 0
+hjulhastighetDefault = 50
+let hjulhastighet = hjulhastighetDefault
 basic.forever(function () {
     getInput()
     doLights()
     doWheels()
-})
-basic.forever(function () {
-    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_2)) {
-        hastighet += -50
-        basic.showString("" + hastighet)
-    }
-    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_8)) {
-        hastighet += 50
-        basic.showString("" + hastighet)
-    }
-    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_3)) {
-        hastighet = 200
-        basic.showString("" + hastighet)
-    }
 })
 basic.forever(function () {
     while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Up)) {

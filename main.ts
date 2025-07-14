@@ -1,5 +1,62 @@
 function doWheels () {
-	
+    if (hjul == 0) {
+        MiniCar.motor(Motorlist.M1, Direction1.Forward, 0)
+        MiniCar.motor(Motorlist.M2, Direction1.Forward, 0)
+        basic.showLeds(`
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            `)
+    }
+    if (hjul == 1) {
+        MiniCar.motor(Motorlist.M1, Direction1.Forward, hjulhastighet)
+        MiniCar.motor(Motorlist.M2, Direction1.Forward, hjulhastighet)
+        basic.showLeds(`
+            . . # . .
+            . # # # .
+            # . # . #
+            . . # . .
+            . . # . .
+            `)
+    }
+    if (hjul == 2) {
+        MiniCar.motor(Motorlist.M1, Direction1.Backward, hjulhastighet)
+        MiniCar.motor(Motorlist.M2, Direction1.Backward, hjulhastighet)
+        basic.showLeds(`
+            . . # . .
+            . . # . .
+            # . # . #
+            . # # # .
+            . . # . .
+            `)
+        backa()
+    }
+    if (hjul == 3) {
+        MiniCar.motor(Motorlist.M1, Direction1.Forward, hjulhastighet)
+        MiniCar.motor(Motorlist.M2, Direction1.Backward, hjulhastighet)
+        basic.showLeds(`
+            . . # . .
+            . . . # .
+            # # # # #
+            . . . # .
+            . . # . .
+            `)
+        hjul = 0
+    }
+    if (hjul == 4) {
+        MiniCar.motor(Motorlist.M1, Direction1.Backward, hjulhastighet)
+        MiniCar.motor(Motorlist.M2, Direction1.Forward, hjulhastighet)
+        basic.showLeds(`
+            . . # . .
+            . # . . .
+            # # # # #
+            . # . . .
+            . . # . .
+            `)
+        hjul = 0
+    }
 }
 function getInput () {
     irKnapp = irRemote.returnIrButton()
@@ -12,7 +69,7 @@ function getInput () {
     if (irKnapp == irRemote.irButton(IrButton.Number_2)) {
         lamphastighet += -50
     }
-    if (irKnapp == irRemote.irButton(IrButton.Number_8)) {
+    if (irKnapp == irRemote.irButton(IrButton.Number_5)) {
         lamphastighet += 50
     }
     if (irKnapp == irRemote.irButton(IrButton.Number_3)) {
@@ -20,6 +77,15 @@ function getInput () {
     }
     if (irKnapp == irRemote.irButton(IrButton.Up)) {
         hjul = 1
+    }
+    if (irKnapp == irRemote.irButton(IrButton.Down)) {
+        hjul = 2
+    }
+    if (irKnapp == irRemote.irButton(IrButton.Right)) {
+        hjul = 3
+    }
+    if (irKnapp == irRemote.irButton(IrButton.Left)) {
+        hjul = 4
     }
 }
 function blinkaLSlump () {
@@ -40,6 +106,12 @@ function blinkaLSlump () {
         MiniCar.led_rgb(LED_rgb_L_R.LED_L, LED_color.yellow)
     }
     basic.pause(lamphastighet)
+}
+function backa () {
+    for (let index = 0; index < 5; index++) {
+        music.play(music.tonePlayable(988, music.beat(BeatFraction.Double)), music.PlaybackMode.UntilDone)
+        basic.pause(200)
+    }
 }
 function blinkaRSlump () {
     color = randint(1, 7)
@@ -76,6 +148,7 @@ function doLights () {
 }
 let color = 0
 let irKnapp = 0
+let hjulhastighet = 0
 let hjulhastighetDefault = 0
 let hjul = 0
 let lamphastighet = 0
@@ -86,70 +159,9 @@ let lamphastighetDefault = 200
 lamphastighet = lamphastighetDefault
 hjul = 0
 hjulhastighetDefault = 50
-let hjulhastighet = hjulhastighetDefault
+hjulhastighet = hjulhastighetDefault
 basic.forever(function () {
     getInput()
     doLights()
     doWheels()
-})
-basic.forever(function () {
-    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Up)) {
-        MiniCar.motor(Motorlist.M1, Direction1.Forward, 50)
-        MiniCar.motor(Motorlist.M2, Direction1.Forward, 50)
-        basic.showLeds(`
-            . . # . .
-            . # # # .
-            # . # . #
-            . . # . .
-            . . # . .
-            `)
-    }
-    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Down)) {
-        MiniCar.motor(Motorlist.M1, Direction1.Backward, 50)
-        MiniCar.motor(Motorlist.M2, Direction1.Backward, 50)
-        basic.showLeds(`
-            . . # . .
-            . . # . .
-            # . # . #
-            . # # # .
-            . . # . .
-            `)
-        for (let index = 0; index < 5; index++) {
-            music.play(music.tonePlayable(988, music.beat(BeatFraction.Double)), music.PlaybackMode.UntilDone)
-            basic.pause(200)
-        }
-    }
-    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Left)) {
-        MiniCar.motor(Motorlist.M1, Direction1.Backward, 50)
-        MiniCar.motor(Motorlist.M2, Direction1.Forward, 50)
-        basic.showLeds(`
-            . . # . .
-            . # . . .
-            # # # # #
-            . # . . .
-            . . # . .
-            `)
-    }
-    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Right)) {
-        MiniCar.motor(Motorlist.M1, Direction1.Forward, 50)
-        MiniCar.motor(Motorlist.M2, Direction1.Backward, 50)
-        basic.showLeds(`
-            . . # . .
-            . . . # .
-            # # # # #
-            . . . # .
-            . . # . .
-            `)
-    }
-    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Ok)) {
-        MiniCar.motor(Motorlist.M1, Direction1.Forward, 0)
-        MiniCar.motor(Motorlist.M2, Direction1.Forward, 0)
-        basic.showLeds(`
-            . . . . .
-            . . . . .
-            . . . . .
-            . . . . .
-            . . . . .
-            `)
-    }
 })

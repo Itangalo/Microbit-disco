@@ -1,3 +1,21 @@
+function doWheels () {
+	
+}
+function getInput () {
+    irKnapp = irRemote.returnIrButton()
+    if (irKnapp == irRemote.irButton(IrButton.Number_1)) {
+        lampor = 1
+    }
+    if (irKnapp == irRemote.irButton(IrButton.Number_0)) {
+        lampor = 0
+    }
+    if (irKnapp == irRemote.irButton(IrButton.Number_2)) {
+        lamphastighet += -50
+    }
+    if (irKnapp == irRemote.irButton(IrButton.Up)) {
+        hjul = 1
+    }
+}
 function blinkaLSlump () {
     color = randint(1, 7)
     if (color == 1) {
@@ -36,21 +54,46 @@ function blinkaRSlump () {
     }
     basic.pause(hastighet)
 }
-let color = 0
-let hastighet = 0
-irRemote.connectInfrared(DigitalPin.P16)
-hastighet = 200
-basic.forever(function () {
-    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_1)) {
-        while (irRemote.returnIrButton() != irRemote.irButton(IrButton.Number_0)) {
-            if (Math.randomBoolean()) {
-                blinkaRSlump()
-            } else {
-                blinkaLSlump()
-            }
+function doLights () {
+    if (lampor == 1) {
+        if (Math.randomBoolean()) {
+            blinkaRSlump()
+        } else {
+            blinkaLSlump()
         }
+    }
+    if (lampor == 0) {
         MiniCar.led_rgb(LED_rgb_L_R.LED_L, LED_color.black)
         MiniCar.led_rgb(LED_rgb_L_R.LED_R, LED_color.black)
+    }
+}
+let hastighet = 0
+let color = 0
+let irKnapp = 0
+let hjul = 0
+let lampor = 0
+irRemote.connectInfrared(DigitalPin.P16)
+lampor = 0
+let lamphastighet = 0
+hjul = 0
+let hjulhastighet = 0
+basic.forever(function () {
+    getInput()
+    doLights()
+    doWheels()
+})
+basic.forever(function () {
+    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_2)) {
+        hastighet += -50
+        basic.showString("" + hastighet)
+    }
+    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_8)) {
+        hastighet += 50
+        basic.showString("" + hastighet)
+    }
+    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_3)) {
+        hastighet = 200
+        basic.showString("" + hastighet)
     }
 })
 basic.forever(function () {
@@ -75,8 +118,8 @@ basic.forever(function () {
             . # # # .
             . . # . .
             `)
-        for (let index = 0; index < 4; index++) {
-            music.play(music.tonePlayable(988, music.beat(BeatFraction.Whole)), music.PlaybackMode.UntilDone)
+        for (let index = 0; index < 5; index++) {
+            music.play(music.tonePlayable(988, music.beat(BeatFraction.Double)), music.PlaybackMode.UntilDone)
             basic.pause(200)
         }
     }
@@ -112,19 +155,5 @@ basic.forever(function () {
             . . . . .
             . . . . .
             `)
-    }
-})
-basic.forever(function () {
-    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_2)) {
-        hastighet += -50
-        basic.showString("" + (hastighet))
-    }
-    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_8)) {
-        hastighet += 50
-        basic.showString("" + (hastighet))
-    }
-    while (irRemote.returnIrButton() == irRemote.irButton(IrButton.Number_3)) {
-        hastighet = 200
-        basic.showString("" + (hastighet))
     }
 })

@@ -71,14 +71,10 @@ def on_forever2():
             . # # # .
             . . # . .
             """)
-        music.play(music.tone_playable(262, music.beat(BeatFraction.DOUBLE)),
-            music.PlaybackMode.IN_BACKGROUND)
-        music.play(music.tone_playable(523, music.beat(BeatFraction.DOUBLE)),
-            music.PlaybackMode.IN_BACKGROUND)
-        music.play(music.tone_playable(262, music.beat(BeatFraction.DOUBLE)),
-            music.PlaybackMode.IN_BACKGROUND)
-        music.play(music.tone_playable(523, music.beat(BeatFraction.DOUBLE)),
-            music.PlaybackMode.IN_BACKGROUND)
+        for index in range(4):
+            music.play(music.tone_playable(988, music.beat(BeatFraction.DOUBLE)),
+                music.PlaybackMode.UNTIL_DONE)
+            basic.pause(200)
     while irRemote.return_ir_button() == irRemote.ir_button(IrButton.LEFT):
         MiniCar.motor(Motorlist.M1, Direction1.BACKWARD, 50)
         MiniCar.motor(Motorlist.M2, Direction1.FORWARD, 50)
@@ -105,7 +101,7 @@ def on_forever2():
         basic.show_leds("""
             . . . . .
             . . . . .
-            . . # . .
+            . . . . .
             . . . . .
             . . . . .
             """)

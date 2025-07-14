@@ -1,3 +1,79 @@
+def doWheels():
+    global hjul
+    if hjul == 0:
+        MiniCar.motor(Motorlist.M1, Direction1.FORWARD, 0)
+        MiniCar.motor(Motorlist.M2, Direction1.FORWARD, 0)
+        basic.show_leds("""
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            """)
+    if hjul == 1:
+        MiniCar.motor(Motorlist.M1, Direction1.FORWARD, hjulhastighet)
+        MiniCar.motor(Motorlist.M2, Direction1.FORWARD, hjulhastighet)
+        basic.show_leds("""
+            . . # . .
+            . # # # .
+            # . # . #
+            . . # . .
+            . . # . .
+            """)
+    if hjul == 2:
+        MiniCar.motor(Motorlist.M1, Direction1.BACKWARD, hjulhastighet)
+        MiniCar.motor(Motorlist.M2, Direction1.BACKWARD, hjulhastighet)
+        basic.show_leds("""
+            . . # . .
+            . . # . .
+            # . # . #
+            . # # # .
+            . . # . .
+            """)
+        backa()
+    if hjul == 3:
+        MiniCar.motor(Motorlist.M1, Direction1.FORWARD, hjulhastighet)
+        MiniCar.motor(Motorlist.M2, Direction1.BACKWARD, hjulhastighet)
+        basic.show_leds("""
+            . . # . .
+            . . . # .
+            # # # # #
+            . . . # .
+            . . # . .
+            """)
+        hjul = 0
+    if hjul == 4:
+        MiniCar.motor(Motorlist.M1, Direction1.BACKWARD, hjulhastighet)
+        MiniCar.motor(Motorlist.M2, Direction1.FORWARD, hjulhastighet)
+        basic.show_leds("""
+            . . # . .
+            . # . . .
+            # # # # #
+            . # . . .
+            . . # . .
+            """)
+        hjul = 0
+def getInput():
+    global irKnapp, lampor, lamphastighet, hjul
+    irKnapp = irRemote.return_ir_button()
+    if irKnapp == irRemote.ir_button(IrButton.NUMBER_1):
+        lampor = 1
+    if irKnapp == irRemote.ir_button(IrButton.NUMBER_0):
+        lampor = 0
+    if irKnapp == irRemote.ir_button(IrButton.NUMBER_2):
+        lamphastighet += -50
+    if irKnapp == irRemote.ir_button(IrButton.NUMBER_5):
+        lamphastighet += 50
+    if irKnapp == irRemote.ir_button(IrButton.NUMBER_3):
+        lamphastighet = hjulhastighetDefault
+    if irKnapp == irRemote.ir_button(IrButton.UP):
+        hjul = 1
+    if irKnapp == irRemote.ir_button(IrButton.DOWN):
+        hjul = 2
+    if irKnapp == irRemote.ir_button(IrButton.RIGHT):
+        hjul = 3
+    if irKnapp == irRemote.ir_button(IrButton.LEFT):
+        hjul = 4
 def blinkaLSlump():
     global color
     color = randint(1, 7)
@@ -15,7 +91,12 @@ def blinkaLSlump():
         MiniCar.led_rgb(LED_rgb_L_R.LED_L, LED_color.WHITE)
     else:
         MiniCar.led_rgb(LED_rgb_L_R.LED_L, LED_color.YELLOW)
-    basic.pause(hastighet)
+    basic.pause(lamphastighet)
+def backa():
+    for index in range(5):
+        music.play(music.tone_playable(988, music.beat(BeatFraction.DOUBLE)),
+            music.PlaybackMode.UNTIL_DONE)
+        basic.pause(200)
 def blinkaRSlump():
     global color
     color = randint(1, 7)
@@ -33,89 +114,35 @@ def blinkaRSlump():
         MiniCar.led_rgb(LED_rgb_L_R.LED_R, LED_color.WHITE)
     else:
         MiniCar.led_rgb(LED_rgb_L_R.LED_R, LED_color.YELLOW)
-    basic.pause(hastighet)
-color = 0
-hastighet = 0
-irRemote.connect_infrared(DigitalPin.P16)
-hastighet = 200
-
-def on_forever():
-    while irRemote.return_ir_button() == irRemote.ir_button(IrButton.NUMBER_1):
-        while irRemote.return_ir_button() != irRemote.ir_button(IrButton.NUMBER_0):
-            if Math.random_boolean():
-                blinkaRSlump()
-            else:
-                blinkaLSlump()
+    basic.pause(lamphastighet)
+def doLights():
+    global lamphastighet
+    if lampor == 1:
+        if Math.random_boolean():
+            blinkaRSlump()
+        else:
+            blinkaLSlump()
+    if lampor == 0:
         MiniCar.led_rgb(LED_rgb_L_R.LED_L, LED_color.BLACK)
         MiniCar.led_rgb(LED_rgb_L_R.LED_R, LED_color.BLACK)
+        lamphastighet = 200
+color = 0
+irKnapp = 0
+hjulhastighet = 0
+hjulhastighetDefault = 0
+hjul = 0
+lamphastighet = 0
+lampor = 0
+irRemote.connect_infrared(DigitalPin.P16)
+lampor = 0
+lamphastighetDefault = 200
+lamphastighet = lamphastighetDefault
+hjul = 0
+hjulhastighetDefault = 50
+hjulhastighet = hjulhastighetDefault
+
+def on_forever():
+    getInput()
+    doLights()
+    doWheels()
 basic.forever(on_forever)
-
-def on_forever2():
-    while irRemote.return_ir_button() == irRemote.ir_button(IrButton.UP):
-        MiniCar.motor(Motorlist.M1, Direction1.FORWARD, 50)
-        MiniCar.motor(Motorlist.M2, Direction1.FORWARD, 50)
-        basic.show_leds("""
-            . . # . .
-            . # # # .
-            # . # . #
-            . . # . .
-            . . # . .
-            """)
-    while irRemote.return_ir_button() == irRemote.ir_button(IrButton.DOWN):
-        MiniCar.motor(Motorlist.M1, Direction1.BACKWARD, 50)
-        MiniCar.motor(Motorlist.M2, Direction1.BACKWARD, 50)
-        basic.show_leds("""
-            . . # . .
-            . . # . .
-            # . # . #
-            . # # # .
-            . . # . .
-            """)
-        for index in range(4):
-            music.play(music.tone_playable(988, music.beat(BeatFraction.DOUBLE)),
-                music.PlaybackMode.UNTIL_DONE)
-            basic.pause(200)
-    while irRemote.return_ir_button() == irRemote.ir_button(IrButton.LEFT):
-        MiniCar.motor(Motorlist.M1, Direction1.BACKWARD, 50)
-        MiniCar.motor(Motorlist.M2, Direction1.FORWARD, 50)
-        basic.show_leds("""
-            . . # . .
-            . # . . .
-            # # # # #
-            . # . . .
-            . . # . .
-            """)
-    while irRemote.return_ir_button() == irRemote.ir_button(IrButton.RIGHT):
-        MiniCar.motor(Motorlist.M1, Direction1.FORWARD, 50)
-        MiniCar.motor(Motorlist.M2, Direction1.BACKWARD, 50)
-        basic.show_leds("""
-            . . # . .
-            . . . # .
-            # # # # #
-            . . . # .
-            . . # . .
-            """)
-    while irRemote.return_ir_button() == irRemote.ir_button(IrButton.OK):
-        MiniCar.motor(Motorlist.M1, Direction1.FORWARD, 0)
-        MiniCar.motor(Motorlist.M2, Direction1.FORWARD, 0)
-        basic.show_leds("""
-            . . . . .
-            . . . . .
-            . . . . .
-            . . . . .
-            . . . . .
-            """)
-basic.forever(on_forever2)
-
-def on_forever3():
-    global hastighet
-    while irRemote.return_ir_button() == irRemote.ir_button(IrButton.NUMBER_2):
-        hastighet += -50
-        basic.show_string("" + str((hastighet)))
-    while irRemote.return_ir_button() == irRemote.ir_button(IrButton.NUMBER_8):
-        hastighet += 50
-        basic.show_string("" + str((hastighet)))
-    while irRemote.return_ir_button() == irRemote.ir_button(IrButton.NUMBER_3):
-        hastighet = 200
-        basic.show_string("" + str((hastighet)))
-basic.forever(on_forever3)

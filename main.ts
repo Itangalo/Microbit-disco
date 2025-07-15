@@ -57,22 +57,22 @@ function doWheels () {
             `)
         hjul = 0
     }
-    if (irKnapp == irRemote.irButton(IrButton.Ok)) {
-        MiniCar.motor(Motorlist.M1, Direction1.Forward, 0)
-        MiniCar.motor(Motorlist.M2, Direction1.Forward, 0)
-        basic.showLeds(`
-            . . . . .
-            . . . . .
-            . . . . .
-            . . . . .
-            . . . . .
-            `)
-        hjul = 0
+    if (avstånd == MiniCar.ultra()) {
+        for (let index = 0; index < 20; index++) {
+            MiniCar.motor(Motorlist.M1, Direction1.Backward, 60)
+            MiniCar.motor(Motorlist.M2, Direction1.Backward, 60)
+        }
+    }
+    if (irKnapp == 4) {
+        avstånd += 2
+    }
+    if (irKnapp == 7) {
+        avstånd += -2
     }
 }
 function getInput () {
     irKnapp = irRemote.returnIrButton()
-    if (659 == irRemote.irButton(IrButton.Number_1)) {
+    if (irKnapp == irRemote.irButton(IrButton.Number_1)) {
         lampor = 1
     }
     if (irKnapp == irRemote.irButton(IrButton.Number_0)) {
@@ -86,6 +86,9 @@ function getInput () {
     }
     if (irKnapp == irRemote.irButton(IrButton.Number_3)) {
         lamphastighet = hjulhastighetDefault
+    }
+    if (irKnapp == irRemote.irButton(IrButton.Ok)) {
+        hjul = 0
     }
     if (irKnapp == irRemote.irButton(IrButton.Up)) {
         hjul = 1
@@ -160,6 +163,7 @@ function doLights () {
 }
 let color = 0
 let irKnapp = 0
+let avstånd = 0
 let hjulhastighet = 0
 let hjulhastighetDefault = 0
 let vrida = 0
@@ -174,6 +178,7 @@ hjul = 0
 vrida = 39
 hjulhastighetDefault = 75
 hjulhastighet = hjulhastighetDefault
+avstånd = 7
 basic.forever(function () {
     getInput()
     doLights()

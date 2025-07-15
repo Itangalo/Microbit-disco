@@ -1,5 +1,12 @@
 function doWheels () {
-    if (hjul == 0) {
+    if (MiniCar.ultra() <= avstånd) {
+        if (auto == 0) {
+            riktning = 2
+        } else {
+            riktning = randint(3, 4)
+        }
+    }
+    if (riktning == 0) {
         MiniCar.motor(Motorlist.M1, Direction1.Forward, 0)
         MiniCar.motor(Motorlist.M2, Direction1.Forward, 0)
         basic.showLeds(`
@@ -10,7 +17,7 @@ function doWheels () {
             . . . . .
             `)
     }
-    if (hjul == 1) {
+    if (riktning == 1) {
         MiniCar.motor(Motorlist.M1, Direction1.Forward, hjulhastighet)
         MiniCar.motor(Motorlist.M2, Direction1.Forward, hjulhastighet)
         basic.showLeds(`
@@ -21,7 +28,7 @@ function doWheels () {
             . . # . .
             `)
     }
-    if (hjul == 2) {
+    if (riktning == 2) {
         MiniCar.motor(Motorlist.M1, Direction1.Backward, hjulhastighet)
         MiniCar.motor(Motorlist.M2, Direction1.Backward, hjulhastighet)
         basic.showLeds(`
@@ -33,7 +40,7 @@ function doWheels () {
             `)
         backa()
     }
-    if (hjul == 3) {
+    if (riktning == 3) {
         MiniCar.motor(Motorlist.M1, Direction1.Forward, vrida)
         MiniCar.motor(Motorlist.M2, Direction1.Backward, vrida)
         basic.showLeds(`
@@ -43,9 +50,9 @@ function doWheels () {
             . . . # .
             . . # . .
             `)
-        hjul = 0
+        riktning = 0
     }
-    if (hjul == 4) {
+    if (riktning == 4) {
         MiniCar.motor(Motorlist.M1, Direction1.Backward, vrida)
         MiniCar.motor(Motorlist.M2, Direction1.Forward, vrida)
         basic.showLeds(`
@@ -55,13 +62,7 @@ function doWheels () {
             . # . . .
             . . # . .
             `)
-        hjul = 0
-    }
-    if (avstånd == MiniCar.ultra()) {
-        for (let index = 0; index < 20; index++) {
-            MiniCar.motor(Motorlist.M1, Direction1.Backward, 60)
-            MiniCar.motor(Motorlist.M2, Direction1.Backward, 60)
-        }
+        riktning = 0
     }
     if (irKnapp == 4) {
         avstånd += 2
@@ -72,6 +73,9 @@ function doWheels () {
 }
 function getInput () {
     irKnapp = irRemote.returnIrButton()
+    if (irKnapp == irRemote.irButton(IrButton.Hash)) {
+        auto = 1
+    }
     if (irKnapp == irRemote.irButton(IrButton.Number_1)) {
         lampor = 1
     }
@@ -88,19 +92,20 @@ function getInput () {
         lamphastighet = hjulhastighetDefault
     }
     if (irKnapp == irRemote.irButton(IrButton.Ok)) {
-        hjul = 0
+        riktning = 0
+        auto = 0
     }
     if (irKnapp == irRemote.irButton(IrButton.Up)) {
-        hjul = 1
+        riktning = 1
     }
     if (irKnapp == irRemote.irButton(IrButton.Down)) {
-        hjul = 2
+        riktning = 2
     }
     if (irKnapp == irRemote.irButton(IrButton.Right)) {
-        hjul = 3
+        riktning = 3
     }
     if (irKnapp == irRemote.irButton(IrButton.Left)) {
-        hjul = 4
+        riktning = 4
     }
 }
 function blinkaLSlump () {
@@ -167,14 +172,16 @@ let avstånd = 0
 let hjulhastighet = 0
 let hjulhastighetDefault = 0
 let vrida = 0
-let hjul = 0
+let riktning = 0
 let lamphastighet = 0
 let lampor = 0
+let auto = 0
 irRemote.connectInfrared(DigitalPin.P16)
+auto = 0
 lampor = 0
 let lamphastighetDefault = 200
 lamphastighet = lamphastighetDefault
-hjul = 0
+riktning = 0
 vrida = 39
 hjulhastighetDefault = 75
 hjulhastighet = hjulhastighetDefault

@@ -3,7 +3,13 @@ function doWheels () {
         if (auto == 0) {
             riktning = 2
         } else {
-            riktning = randint(3, 4)
+            if (Math.randomBoolean()) {
+                MiniCar.motor(Motorlist.M1, Direction1.Forward, 39)
+                MiniCar.motor(Motorlist.M2, Direction1.Backward, 39)
+            } else {
+                MiniCar.motor(Motorlist.M1, Direction1.Backward, 39)
+                MiniCar.motor(Motorlist.M2, Direction1.Forward, 39)
+            }
         }
     }
     if (riktning == 0) {
@@ -163,7 +169,6 @@ function doLights () {
     if (lampor == 0) {
         MiniCar.led_rgb(LED_rgb_L_R.LED_L, LED_color.black)
         MiniCar.led_rgb(LED_rgb_L_R.LED_R, LED_color.black)
-        lamphastighet = 200
     }
 }
 let color = 0
